@@ -15,5 +15,33 @@ executable csv-killa
   main-is:             Main.hs
   build-depends:       base, bytestring
   hs-source-dirs:      src
-  ghc-options:         -O2
+  ghc-options:         -O2 -funbox-strict-fields
+  default-language:    Haskell2010
+
+executable cassava
+  main-is:             Main.hs
+  build-depends:       base, bytestring, cassava, vector
+  hs-source-dirs:      cassava
+  ghc-options:         -O2 -funbox-strict-fields
+  default-language:    Haskell2010
+
+executable hw-dsv-bmi2
+  main-is:             Main.hs
+  build-depends:       base, bytestring, hw-dsv, vector
+  hs-source-dirs:      hwdsv
+  ghc-options:         -O2 -mbmi2 -msse4.2 -funbox-strict-fields
+  default-language:    Haskell2010
+
+executable hw-dsv
+  main-is:             Main.hs
+  build-depends:       base, bytestring, hw-dsv, vector
+  hs-source-dirs:      hwdsv
+  ghc-options:         -O2 -funbox-strict-fields
+  default-language:    Haskell2010
+
+executable scythe
+  main-is:             Main.hs
+  build-depends:       base, scythe, bytestring
+  hs-source-dirs:      scythe
+  ghc-options:         -O2 -funbox-strict-fields
   default-language:    Haskell2010

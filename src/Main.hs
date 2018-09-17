@@ -1,5 +1,5 @@
-{-# LANGUAGE BangPatterns      #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE BangPatterns      #-}
 {-# LANGUAGE MultiWayIf        #-}
 module Main where
 
@@ -15,16 +15,14 @@ import           System.IO
 main :: IO ()
 main = do
   lbs <- L.readFile "bobaadr.txt"
-  let len = length $ scanner $ head $ take 1 (L8.lines lbs)
-  print =<< do foldM go 0 $ chunksOf len (scanner lbs)
-    where
-      go !n bs = pure (n + length bs)
+  -- let len = length $ scanner $ head $ take 1 (L8.lines lbs)
+  print $ length (scanner lbs)
 
-chunksOf :: Int -> [a] -> [[a]]
-chunksOf _ [] = []
-chunksOf len xs = do
-  let (chunk, rest) = splitAt len xs
-  chunk : chunksOf len rest
+-- chunksOf :: Int -> [a] -> [[a]]
+-- chunksOf _ [] = []
+-- chunksOf len xs = do
+--   let (chunk, rest) = splitAt len xs
+--   chunk : chunksOf len rest
 
 carriageReturn, newLine, comma, doubleQuote :: Word8
 carriageReturn = 13
@@ -57,11 +55,9 @@ scanner bs
 startUnescaped
   :: ByteString
   -> (ByteString, ByteString)
-startUnescaped bs = do
-  let (ls,rs) = L.break pred bs
-  (ls, rs)
-    where
-      pred = (`L.elem` shouldBreak)
+startUnescaped bs | otherwise = L.break pred bs
+  where
+    pred = (`L.elem` shouldBreak)
 
 shouldBreak :: ByteString
 shouldBreak = L.pack [ carriageReturn
@@ -69,8 +65,4 @@ shouldBreak = L.pack [ carriageReturn
                      ]
 
 startEscaped :: ByteString -> (ByteString, ByteString)
-startEscaped bs = do
-  let (ls,rs) = L.break (==doubleQuote) bs
-  (ls, L.drop 1 rs)
-
-
+startEscaped bs = L.drop 1 <$> L.break (==doubleQuote) bs

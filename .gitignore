@@ -4,3 +4,5 @@ dist
 *.hi
 bobaadr.txt
 *.csv
+/result
+/result-2
